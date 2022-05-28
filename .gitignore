@@ -3,3 +3,5 @@ Scripts
 pyvenv.cfg
 share
 bnp-paribas
+bin
+lib64
