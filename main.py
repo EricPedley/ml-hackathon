@@ -3,7 +3,7 @@ from enum import Enum, auto
 import pandas as pd
 import pandas.core.series#for type hint that helps intellisense
 import numpy as np
-from regression import run_regression_ensemble
+from autolearn import run_regression_ensemble, run_classification_ensemble
 from column_analysis import load_clean
 
 
@@ -42,7 +42,7 @@ def process_kaggle_dataset(folder):
     if task_type==TaskTypes.REGRESSION:
         automl = run_regression_ensemble(x,y)
     else:
-        raise NotImplementedError
+        automl = run_classification_ensemble(x,y)
     print(automl.leaderboard())
     return task_type
 
