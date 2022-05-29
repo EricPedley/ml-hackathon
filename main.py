@@ -3,6 +3,9 @@ from enum import Enum, auto
 import pandas as pd
 import pandas.core.series#for type hint that helps intellisense
 import numpy as np
+from regression import run_regression_ensemble
+from column_analysis import load_clean
+
 
 data_folder_names = os.listdir('data')
 
@@ -21,29 +24,39 @@ def get_task_type(y_col: pandas.core.series.Series):
     if len(pd.unique(y_col)) == 2:
         return TaskTypes.BINARY_CLASSIFICATION
     return TaskTypes.MULTI_CLASSIFICATION
-        
 
 def process_uci_dataset(folder):
     folder_contents = os.listdir(f'data/{folder}')
     return 'NOT IMPLEMENTED'
 
 def process_kaggle_dataset(folder):
-    data = pd.read_csv(f'data/{folder}/train.csv')
+    data = load_clean(f'data/{folder}/train.csv')
     target_col = ''
     for candidate_col_name in ('y', 'Y', 'target', 'Target', 'TARGET'):
         if candidate_col_name in data.columns:
             target_col = candidate_col_name
             break
     
-    y, x = data[target_col], data.drop(columns=[target_col,'ID'], axis=1)
+    y, x = data[target_col], data.drop(columns=[target_col], axis=1)
     task_type = get_task_type(y)
+    if task_type==TaskTypes.REGRESSION:
+        automl = run_regression_ensemble(x,y)
+    else:
+        raise NotImplementedError
+    print(automl.leaderboard())
     return task_type
 
 for folder in data_folder_names:
-    folder_contents = os.listdir(f'data/{folder}')
-    is_uci_dataset = any('.names' in f for f in folder_contents)
-    if is_uci_dataset:
-        results = process_uci_dataset(folder)
-    else:
-        results = process_kaggle_dataset(folder)
-    print(folder, results)
+    if folder=='bnp-paribas':
+        continue
+    try:
+        folder_contents = os.listdir(f'data/{folder}')
+        is_uci_dataset = any('.names' in f for f in folder_contents)
+        if is_uci_dataset:
+            results = process_uci_dataset(folder)
+        else:
+            results = process_kaggle_dataset(folder)
+        
+        print(folder, results)
+    except NotImplementedError as e:
+        print(f'Skipped {folder}')
