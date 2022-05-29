@@ -12,7 +12,7 @@ class ColumnType(Enum):
 
 def clean(df: pandas.DataFrame,replace_mean = False):
     '''
-    Cleans a dataframe by filling in missing values with the mean (if numeric) or most frequent value (if not)
+    Cleans a dataframe in-place by filling in missing values with the mean (if numeric) or most frequent value (if not)
     '''
     means = df.mean(numeric_only=True)
     modes = df.mode()
@@ -42,6 +42,10 @@ def tag_columns(df: pandas.DataFrame) -> dict:
     return result
 
 def load_clean(filename):
+    '''
+    Drop-in replacement for pd.read_csv that also fills in missing values, 
+    converts columns to numeric types, and drops ID columns 
+    '''
     df = pandas.read_csv(filename) #.head()
     clean(df,True)
     tags = tag_columns(df)
@@ -58,10 +62,10 @@ def load_clean(filename):
         df[i] = le.fit_transform(df[[i]].to_numpy().ravel())
 
 
-    return df,tags
+    return df #removed tags from return value because it's never being used anywhere.
 
 if __name__ == '__main__':
-    df,tags = load_clean('data/bnp-paribas/train.csv')
+    df = load_clean('data/bnp-paribas/train.csv')
 
     train, test = train_test_split(df,test_size=0.2)
     reg = logistic_regression(train,'target')
