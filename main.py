@@ -5,7 +5,7 @@ import pandas.core.series#for type hint that helps intellisense
 import numpy as np
 from autolearn import run_regression_ensemble, run_classification_ensemble
 from column_analysis import load_clean
-
+from inspect_attributes import find_target_col_index, find_train_data
 
 data_folder_names = os.listdir('data')
 
@@ -25,18 +25,27 @@ def get_task_type(y_col: pandas.core.series.Series):
         return TaskTypes.BINARY_CLASSIFICATION
     return TaskTypes.MULTI_CLASSIFICATION
 
-def process_uci_dataset(folder):
+def load_uci_dataset(folder):
     folder_contents = os.listdir(f'data/{folder}')
-    return 'NOT IMPLEMENTED'
+    dataloc = find_train_data(folder)
+    if not dataloc:
+        #TODO: Handle??
+        return None,None
+    target_col = find_target_col_index(folder)
+    data = load_clean(f'data/{folder}/{dataloc}',header=None)
+    return data,target_col
 
-def process_kaggle_dataset(folder):
+
+def load_kaggle_dataset(folder):
     data = load_clean(f'data/{folder}/train.csv')
     target_col = ''
     for candidate_col_name in ('y', 'Y', 'target', 'Target', 'TARGET'):
         if candidate_col_name in data.columns:
             target_col = candidate_col_name
             break
-    
+    return data, target_col
+
+def process_dataset(data,target_col):
     y, x = data[target_col], data.drop(columns=[target_col], axis=1)
     task_type = get_task_type(y)
     if task_type==TaskTypes.REGRESSION:
@@ -47,16 +56,19 @@ def process_kaggle_dataset(folder):
     return task_type
 
 for folder in data_folder_names:
-    if folder=='bnp-paribas':
+    if folder=='bnp-paribas' or folder == 'ucimlrepo.db':
         continue
     try:
         folder_contents = os.listdir(f'data/{folder}')
         is_uci_dataset = any('.names' in f for f in folder_contents)
         if is_uci_dataset:
-            results = process_uci_dataset(folder)
+            data,target_col = load_uci_dataset(folder)
         else:
-            results = process_kaggle_dataset(folder)
-        
+            data,target_col = load_kaggle_dataset(folder)
+        if data is not None:
+            results = process_dataset(data,target_col)
+        else:
+            results = "DATA FILE NOT FOUND: LEGACY DATASET"
         print(folder, results)
     except NotImplementedError as e:
         print(f'Skipped {folder}')

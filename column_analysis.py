@@ -41,17 +41,16 @@ def tag_columns(df: pandas.DataFrame) -> dict:
 
     return result
 
-def load_clean(filename):
+def load_clean(filename,**kwargs):
     '''
-    Drop-in replacement for pd.read_csv that also fills in missing values, 
-    converts columns to numeric types, and drops ID columns 
+    Drop-in replacement for pd.read_csv that also fills in missing values,
+    converts columns to numeric types, and drops ID columns. Also takes the same kwargs!
     '''
-    df = pandas.read_csv(filename) #.head()
+    df = pandas.read_csv(filename,**kwargs) #.head()
     clean(df,True)
     tags = tag_columns(df)
 
     id_cols = [i for i in df.columns if tags[i] == ColumnType.ID]
-    assert len(id_cols) == 1 #Hopefully this is true!
     df = df.drop(columns=id_cols)
 
     cat_cols = [i for i in df.columns if tags[i] == ColumnType.CATEGORICAL]
@@ -71,4 +70,3 @@ if __name__ == '__main__':
     reg = logistic_regression(train,'target')
     print("baseline: ", df['target'].mean())
     print(test_regression(test,reg.score,'target'))
-
