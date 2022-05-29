@@ -7,7 +7,6 @@ from autolearn import run_regression_ensemble, run_classification_ensemble
 from column_analysis import load_clean
 from inspect_attributes import find_target_col_index, find_train_data
 
-data_folder_names = os.listdir('data')
 
 class TaskTypes(Enum):#very cool python feature, thanks Thomas
     REGRESSION = auto()
@@ -26,13 +25,17 @@ def get_task_type(y_col: pandas.core.series.Series):
     return TaskTypes.MULTI_CLASSIFICATION
 
 def load_uci_dataset(folder):
-    folder_contents = os.listdir(f'data/{folder}')
     dataloc = find_train_data(folder)
     if not dataloc:
         #TODO: Handle??
         return None,None
     target_col = find_target_col_index(folder)
-    data = load_clean(f'data/{folder}/{dataloc}',header=None)
+    has_commas = True
+    with open(f'data/{folder}/{dataloc}', 'r') as f:
+        if ',' not in f.readline():
+            has_commas=False
+
+    data = load_clean(f'data/{folder}/{dataloc}',header=None, delim_whitespace = not has_commas)
     return data,target_col
 
 
@@ -52,11 +55,15 @@ def process_dataset(data,target_col):
         automl = run_regression_ensemble(x,y)
     else:
         automl = run_classification_ensemble(x,y)
-    print(automl.leaderboard())
-    return task_type
+    try:
+        print(automl.leaderboard())
+    except KeyError:
+        print('No models had enough time to train on this dataset')
+
+data_folder_names = os.listdir('data')
 
 for folder in data_folder_names:
-    if folder=='bnp-paribas' or folder == 'ucimlrepo.db':
+    if folder == 'ucimlrepo.db':
         continue
     try:
         folder_contents = os.listdir(f'data/{folder}')
@@ -66,9 +73,9 @@ for folder in data_folder_names:
         else:
             data,target_col = load_kaggle_dataset(folder)
         if data is not None:
-            results = process_dataset(data,target_col)
+            print(f'Processing {folder}')
+            process_dataset(data,target_col)
         else:
-            results = "DATA FILE NOT FOUND: LEGACY DATASET"
-        print(folder, results)
+            print("DATA FILE NOT FOUND: LEGACY DATASET")
     except NotImplementedError as e:
         print(f'Skipped {folder}')
