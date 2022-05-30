@@ -1,14 +1,51 @@
-model_id,rank,ensemble_weight,type,cost,duration
-8,1,0.06,random_forest,0.020408163265306145,1.691481351852417
-23,2,0.06,gradient_boosting,0.020408163265306145,1.9936702251434326
-25,3,0.06,mlp,0.020408163265306145,1.243680477142334
-2,4,0.04,random_forest,0.030612244897959218,1.3150527477264404
-6,5,0.06,lda,0.030612244897959218,0.6516780853271484
-20,6,0.2,mlp,0.030612244897959218,0.7464420795440674
-28,7,0.02,lda,0.030612244897959218,0.6170673370361328
-18,8,0.02,random_forest,0.05102040816326525,1.327962875366211
-31,9,0.02,lda,0.061224489795918324,0.5210323333740234
-29,10,0.2,bernoulli_nb,0.23469387755102045,0.6089320182800293
-14,11,0.02,adaboost,0.26530612244897955,1.2649636268615723
-10,12,0.04,gradient_boosting,0.47959183673469385,1.0653722286224365
-19,13,0.2,sgd,0.47959183673469385,1.2181236743927002
+model_id,rank,ensemble_weight,type,cost,duration,Model Details
+9,1,0.14,random_forest,0.030303030303030276,1.0471949577331543,"RandomForestClassifier(bootstrap=False, max_features=2, min_samples_leaf=2,
+                       min_samples_split=3, n_estimators=512, n_jobs=1,
+                       random_state=1, warm_start=True)"
+30,2,0.16,extra_trees,0.037878787878787845,1.5614027976989746,"ExtraTreesClassifier(max_features=2, n_estimators=512, n_jobs=1, random_state=1,
+                     warm_start=True)"
+27,3,0.08,extra_trees,0.045454545454545414,1.002551794052124,"ExtraTreesClassifier(max_features=8, min_samples_leaf=3, min_samples_split=11,
+                     n_estimators=512, n_jobs=1, random_state=1,
+                     warm_start=True)"
+29,4,0.04,extra_trees,0.045454545454545414,1.1619055271148682,"ExtraTreesClassifier(max_features=18, min_samples_split=15, n_estimators=512,
+                     n_jobs=1, random_state=1, warm_start=True)"
+8,5,0.04,lda,0.06060606060606055,0.5568325519561768,"LinearDiscriminantAnalysis(shrinkage='auto', solver='lsqr',
+                           tol=0.00010000000000000009)"
+16,6,0.02,random_forest,0.06060606060606055,1.108940601348877,"RandomForestClassifier(max_features=4, min_samples_leaf=15, min_samples_split=3,
+                       n_estimators=512, n_jobs=1, random_state=1,
+                       warm_start=True)"
+26,7,0.04,mlp,0.0757575757575758,2.1150999069213867,"MLPClassifier(alpha=4.2841884333778574e-06, beta_1=0.999, beta_2=0.9,
+              hidden_layer_sizes=(263, 263, 263),
+              learning_rate_init=0.0011804284312897009, max_iter=128,
+              n_iter_no_change=32, random_state=1, validation_fraction=0.0,
+              verbose=0, warm_start=True)"
+31,8,0.16,lda,0.0757575757575758,0.8726425170898438,"LinearDiscriminantAnalysis(shrinkage='auto', solver='lsqr',
+                           tol=1.5567777104455545e-05)"
+12,9,0.02,random_forest,0.08333333333333337,1.1695992946624756,"RandomForestClassifier(bootstrap=False, max_features=8, min_samples_leaf=2,
+                       min_samples_split=5, n_estimators=512, n_jobs=1,
+                       random_state=1, warm_start=True)"
+28,10,0.02,mlp,0.09090909090909094,0.6726131439208984,"MLPClassifier(alpha=3.1080781258656246e-05, beta_1=0.999, beta_2=0.9,
+              early_stopping=True, hidden_layer_sizes=(40, 40, 40),
+              learning_rate_init=0.0010000000000000002, max_iter=32,
+              n_iter_no_change=32, random_state=1, verbose=0, warm_start=True)"
+11,11,0.02,gradient_boosting,0.11363636363636365,0.8545465469360352,"HistGradientBoostingClassifier(early_stopping=True,
+                               l2_regularization=1.3153561911035717e-10,
+                               learning_rate=0.025345400213312417, loss='auto',
+                               max_iter=128, max_leaf_nodes=16,
+                               min_samples_leaf=27, n_iter_no_change=5,
+                               random_state=1,
+                               validation_fraction=0.2361478213622299,
+                               warm_start=True)"
+13,12,0.12,qda,0.24242424242424243,0.5701441764831543,QuadraticDiscriminantAnalysis(reg_param=0.6019930535728735)
+10,13,0.02,gradient_boosting,0.48484848484848486,1.0302178859710693,"HistGradientBoostingClassifier(early_stopping=False,
+                               l2_regularization=5.4589723121188414e-08,
+                               learning_rate=0.12853200136110404, loss='auto',
+                               max_iter=512, max_leaf_nodes=64,
+                               min_samples_leaf=191, n_iter_no_change=0,
+                               random_state=1, validation_fraction=None,
+                               warm_start=True)"
+19,14,0.12,sgd,0.48484848484848486,1.1453852653503418,"SGDClassifier(alpha=0.0018367485569817758, average=True,
+              epsilon=0.06935467259367672, eta0=3.0158489869733344e-07,
+              learning_rate='constant', loss='modified_huber', max_iter=1024,
+              penalty='l1', random_state=1, tol=5.2594585460405347e-05,
+              warm_start=True)"

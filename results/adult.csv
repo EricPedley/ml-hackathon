@@ -1,2 +1,3 @@
-model_id,rank,ensemble_weight,type,cost,duration
-2,1,1.0,random_forest,0.14207718079166154,10.871727228164673
+model_id,rank,ensemble_weight,type,cost,duration,Model Details
+2,1,1.0,random_forest,0.14191327005397358,11.89939284324646,"RandomForestClassifier(max_features=3, n_estimators=512, n_jobs=1,
+                       random_state=1, warm_start=True)"

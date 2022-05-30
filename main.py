@@ -60,8 +60,9 @@ def process_dataset(data,target_col):
         result = automl.leaderboard()
         result['Model Details']='Details unavailable'
         for i, row in result.iterrows():
-            id = row['Model_id']
-            row['Model Details'] = str(models[id])
+            id = row.name#row['Model_id']
+            model_type_name = 'sklearn_regressor' if task_type==TaskTypes.REGRESSION else 'sklearn_classifier'
+            row['Model Details'] = str(models[id][model_type_name])
             result.loc[i] = row
         return result
     except RuntimeError as e:
@@ -88,3 +89,18 @@ for folder in data_folder_names:
             print("DATA FILE NOT FOUND: LEGACY DATASET")
     except NotImplementedError as e:
         print(f'Skipped {folder}')
+
+'''
+
+1
+2
+3
+1
+2
+4
+2
+1
+
+len(1,2,3,4) = how many unique values are there
+
+'''

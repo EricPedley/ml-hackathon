@@ -1,4 +1,8 @@
-model_id,rank,ensemble_weight,type,cost,duration
-5,1,0.46,extra_trees,0.4478362498731654,10.22127079963684
-6,2,0.5,ard_regression,0.448211290089249,1.3800904750823975
-3,3,0.04,extra_trees,0.47489963584972583,6.028557062149048
+model_id,rank,ensemble_weight,type,cost,duration,Model Details
+4,1,0.9,extra_trees,0.39509028961326675,11.598671197891235,"ExtraTreesRegressor(criterion='mse', max_features=0.6962692885049272,
+                    min_samples_leaf=17, min_samples_split=17, n_estimators=512,
+                    n_jobs=1, random_state=1, warm_start=True)"
+3,2,0.1,extra_trees,0.4140673633906189,7.928654909133911,"ExtraTreesRegressor(bootstrap=True, criterion='mse',
+                    max_features=0.2477939208870194, min_samples_leaf=2,
+                    min_samples_split=4, n_estimators=512, n_jobs=1,
+                    random_state=1, warm_start=True)"
