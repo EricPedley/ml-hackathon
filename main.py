@@ -56,8 +56,15 @@ def process_dataset(data,target_col):
     else:
         automl = run_classification_ensemble(x,y)
     try:
-        return automl.leaderboard()
-    except KeyError:
+        models = automl.show_models()
+        result = automl.leaderboard()
+        result['Model Details']='Details unavailable'
+        for i, row in result.iterrows():
+            id = row['Model_id']
+            row['Model Details'] = str(models[id])
+            result.loc[i] = row
+        return result
+    except RuntimeError as e:
         print('No models had enough time to train on this dataset')
 
 data_folder_names = os.listdir('data')
@@ -75,7 +82,8 @@ for folder in data_folder_names:
         if data is not None:
             print(f'Processing {folder}')
             results = process_dataset(data,target_col)
-            results.to_csv(f'results/{folder}.csv')
+            if results is not None:
+                results.to_csv(f'results/{folder}.csv')
         else:
             print("DATA FILE NOT FOUND: LEGACY DATASET")
     except NotImplementedError as e:

@@ -4,7 +4,7 @@ import autosklearn.regression
 import autosklearn.classification
 import sklearn.model_selection
 
-SECONDS_PER_DATASET = 60
+SECONDS_PER_DATASET = 62
 SECONDS_PER_MODEL = 30
 
 def run_regression_ensemble(X: Series, y: Series) -> autosklearn.regression.AutoSklearnRegressor:
