@@ -56,7 +56,7 @@ def process_dataset(data,target_col):
     else:
         automl = run_classification_ensemble(x,y)
     try:
-        print(automl.leaderboard())
+        return automl.leaderboard()
     except KeyError:
         print('No models had enough time to train on this dataset')
 
@@ -74,7 +74,8 @@ for folder in data_folder_names:
             data,target_col = load_kaggle_dataset(folder)
         if data is not None:
             print(f'Processing {folder}')
-            process_dataset(data,target_col)
+            results = process_dataset(data,target_col)
+            results.to_csv(f'results/{folder}.csv')
         else:
             print("DATA FILE NOT FOUND: LEGACY DATASET")
     except NotImplementedError as e:

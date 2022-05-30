@@ -14,6 +14,7 @@ def run_regression_ensemble(X: Series, y: Series) -> autosklearn.regression.Auto
     automl = autosklearn.regression.AutoSklearnRegressor(
                 time_left_for_this_task=SECONDS_PER_DATASET,
                     per_run_time_limit=SECONDS_PER_MODEL,
+                    scoring_functions=[autosklearn.metrics.mean_squared_error]
             )
     automl.fit(X_train, y_train)
     return automl
@@ -25,6 +26,7 @@ def run_classification_ensemble(X: Series, y: Series) -> autosklearn.classificat
     automl = autosklearn.classification.AutoSklearnClassifier(
                 time_left_for_this_task=SECONDS_PER_DATASET,
                     per_run_time_limit=SECONDS_PER_MODEL,
+                    scoring_functions =[autosklearn.metrics.roc_auc]
             )
     automl.fit(X_train, y_train)
     return automl

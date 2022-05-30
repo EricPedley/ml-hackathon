@@ -1,0 +1,2 @@
+model_id,rank,ensemble_weight,type,cost,duration
+2,1,1.0,random_forest,0.14207718079166154,10.871727228164673
